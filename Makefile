@@ -6,7 +6,7 @@ ASFLAGS :=
 
 # --- Directories ---
 SRC_DIR := src
-OBJ_DIR := obj
+OBJ_DIR := build
 TARGET := bin/hexDumper
 
 # --- Sources ---
@@ -14,7 +14,9 @@ C_SRCS := $(wildcard $(SRC_DIR)/*.c)
 S_SRCS := $(wildcard $(SRC_DIR)/*.S) $(wildcard $(SRC_DIR)/*.s)
 
 # --- Objects ---
-OBJS := $(C_SRCS:.c=.o) $(S_SRCS:.S=.o) #$(S_SRCS:.s=.o)
+OBJS := $(C_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) 	\
+		$(S_SRCS:$(SRC_DIR)/%.S=$(OBJ_DIR)/%.o)		\
+		#$(S_SRCS:$(SRC_DIR)/%.s=$(OBJ_DIR)/%.o)	
 
 # --- Default Target ---
 all: $(TARGET)
@@ -23,13 +25,13 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^
 
-%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-%.o: $(SRC_DIR)/%.S
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.S
 	$(AS) $(ASFLAGS) -c -o $@ $<
 
-%.o: $(SRC_DIR)/%.s
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.s
 	$(AS) $(ASFLAGS) -c -o $@ $<
 
 # --- Clean Target ---
