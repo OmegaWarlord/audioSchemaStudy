@@ -2,7 +2,7 @@
 
 extern int add_numbers(int a, int b);
 
-int main() {
+int main(int argc, char *argv[]) {
     printf("Result of adding 5 and 10: %d\n", add_numbers(5, 10));
     return 0;
 }
