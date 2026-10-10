@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 extern int add_numbers(int a, int b);
-extern char dump_reg(char *dump_string, int string_length);
+extern int dump_reg(int temp, int string_length);
 
 int main(int argc, char *argv[]) {
     printf("%d\n", argc);
@@ -9,6 +9,6 @@ int main(int argc, char *argv[]) {
         printf("%s\n", argv[1]);
     }
     printf("Result of adding 5 and 10: %d\n", add_numbers(5, 10));
-    printf("%c\n",dump_reg("Hello, World!", 13));
+    printf("Result of dump_reg: %d\n", dump_reg(0, 10));
     return 0;
 }
