@@ -13,6 +13,6 @@ typedef struct {
     mpeg_version_t version;
 } frame_t;
 
-frame_t parse_frame_header(uint32_t header);
+frame_t* parse_frame_header(uint32_t header);
 
 #endif // MP3_PARSE_TOOLS_H
