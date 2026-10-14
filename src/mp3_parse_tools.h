@@ -1,0 +1,6 @@
+#ifndef MP3_PARSE_TOOLS_H
+#define MP3_PARSE_TOOLS_H
+
+
+
+#endif // MP3_PARSE_TOOLS_H
