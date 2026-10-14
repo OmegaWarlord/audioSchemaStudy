@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include "mp3_parse_tools.h"
 
 int main() {
 
