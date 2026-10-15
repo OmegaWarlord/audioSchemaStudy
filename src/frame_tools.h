@@ -1,5 +1,5 @@
-#ifndef MP3_PARSE_TOOLS_H
-#define MP3_PARSE_TOOLS_H
+#ifndef FRAME_TOOLS_H
+#define FRAME_TOOLS_H
 
 //Maybe create enums later
 
