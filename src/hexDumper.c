@@ -25,11 +25,10 @@ int main() {
 
     for(int i = 0; i < file_stat.st_size - 1; i++) {
         if((file_data[i] == 0xFF) && ((file_data[i+1] >> 1) == 0x7D)) {
-            uint8_t *frame_raw = get_raw_frame(&file_data[i], 626);
-            frame_t *frame = parse_frame_header((uint32_t)((file_data[i] << 24) | (file_data[i + 1] << 16) | (file_data[i + 2] << 8) | file_data[i + 3]));
-            printf("%08X %02X\n", frame->header, frame_raw[625]);
+            uint8_t *frame_raw = get_raw_frame(&file_data[i], 626); //still seperate so it can be freed
+            frame_t *frame = parse_frame_header(frame_raw);
+            printf("%08X %02X\n", frame->header, frame->data[0]);
             free(frame);
-            free(frame_raw);
             frames++;
         }
     }

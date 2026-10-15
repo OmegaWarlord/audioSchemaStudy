@@ -10,6 +10,6 @@ typedef struct {
 
 uint8_t *get_raw_frame(uint8_t *data, int frame_len);
 
-frame_t *parse_frame_header(uint32_t header);
+frame_t *parse_frame_header(uint8_t *header);
 
 #endif // FRAME_TOOLS_H
