@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include "mp3_parse_tools.h"
+#include "frame_tools.h"
 
 #include <fcntl.h>
 #include <sys/mman.h>
