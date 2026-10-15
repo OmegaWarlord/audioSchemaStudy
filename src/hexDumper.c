@@ -1,29 +1,39 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include "mp3_parse_tools.h"
+
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
 
 int main() {
 
-    FILE *data_stream = fopen("./MP3Examples/proofofhero.mp3", "rb");
+    int file = open("./MP3Examples/korok.mp3", O_RDONLY);
 
-    if(data_stream == NULL) {
-        printf("Error opening file.\n");
-        return 1;
-    }
-    
-    uint8_t buffer[4];
     int frames = 0;
-    //int valid_frames = 0;
-    while(fread(buffer, sizeof(uint8_t), 2, data_stream) > 0) {
-        if((buffer[0] == 0xFF) && ((buffer[1] & 0xE0) == 0xE0)) {
+
+    struct stat file_stat;
+
+    fstat(file, &file_stat);
+
+    uint8_t *file_data = mmap(NULL, file_stat.st_size, PROT_READ, MAP_PRIVATE, file, 0);
+
+    close(file);
+
+    for(int i = 0; i < file_stat.st_size - 1; i++) {
+        if((file_data[i] == 0xFF) && ((file_data[i + 1] & 0xE0) == 0xE0)) {
+            //frame_t* frame = parse_frame_header((uint32_t)((file_data[i] << 24) | (file_data[i + 1] << 16) | (file_data[i + 2] << 8) | file_data[i + 3]));
+            printf("%08X\n", (uint32_t)((file_data[i] << 24) | (file_data[i + 1] << 16) | (file_data[i + 2] << 8) | file_data[i + 3]));
+            //free(frame);
             frames++;
-            printf("%02X %02X %02X %02X\n", buffer[0], buffer[1], buffer[2], buffer[3]);
-        } 
+        }
     }
 
-    printf("Total frames: %d", frames);
-
-    fclose(data_stream);
-
+    printf("Total frames: %d\n", frames);
+    
+    munmap(file_data, file_stat.st_size);
     return 0;
 }
