@@ -22,13 +22,18 @@ int main(int argc, char *argv[]) { // make it able to cast arguments from termin
 
     close(file);
 
+    printf("%lld\n", file_stat.st_size);
+    printf("%02X\n", file_data[368188]);
+
+    /*
+
     FILE *fptr;
     fptr = fopen("./output/output.csv", "w");
     if (fptr == NULL) {
         printf("Error opening file"); 
         return 1;
     }
-
+    
     int frames = 0;
     for(int i = 0; i < file_stat.st_size - 1; i++) {
         if((file_data[i] == 0xFF) && (file_data[i+1] == 0xFB)) {
@@ -45,6 +50,8 @@ int main(int argc, char *argv[]) { // make it able to cast arguments from termin
     fclose(fptr);
 
     printf("Total frames: %d\n", frames);
+
+    */
     
     munmap(file_data, file_stat.st_size);
     return 0;
