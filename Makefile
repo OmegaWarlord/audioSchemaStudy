@@ -9,7 +9,7 @@ SRC_DIR := src
 OBJ_DIR := build
 OUT_DIR := output
 TARGET_DIR := bin
-TARGET := $(TARGET_DIR)/hexDumper
+TARGET := $(TARGET_DIR)/mp3Dump
 
 # --- Sources ---
 C_SRCS := $(wildcard $(SRC_DIR)/*.c)

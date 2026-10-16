@@ -10,7 +10,7 @@
 
 
 int main(int argc, char *argv[]) { // make it able to cast arguments from terminal for output
-    printf("%d\n", argc);
+    if(argc == 0) return 1;
 
     int file = open(argv[1], O_RDONLY);
 
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) { // make it able to cast arguments from termin
 
     fclose(fptr);
 
-    printf("\nTotal frames: %d\n", frames);
+    printf("Total frames: %d\n", frames);
     
     munmap(file_data, file_stat.st_size);
     return 0;
