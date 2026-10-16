@@ -34,6 +34,7 @@ int main(int argc, char *argv[]) { // make it able to cast arguments from termin
         if((file_data[i] == 0xFF) && (file_data[i+1] == 0xFB)) {
             frame_t *frame = get_frame(&file_data[i]);
             if(frame) {
+                printf("%d\n", i);
                 dump_frame(fptr, frame);
                 free(frame);
                 frames++;

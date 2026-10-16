@@ -23,7 +23,7 @@ int find_frameLength(uint32_t header) { //Calculating Frame Length
     return length;
 }
 
-frame_t *get_frame(const uint8_t *data) {
+frame_t *get_frame(const uint8_t *data) { //Refactor for other channel types eventually
     if(!data) return NULL;
     
     //Frame decleration
@@ -33,23 +33,34 @@ frame_t *get_frame(const uint8_t *data) {
     //Set Header
     frame->header = (uint32_t)( (data[0]<<24) | (data[1]<<16) | (data[2]<<8) | (data[3]));
 
+    //Set Side information
+    frame->side_information = malloc(32);
+    if(!frame->side_information) return NULL;
+    memcpy(frame->side_information, &data[4], 32);
+
     //Find & Set frame Length
     int frame_length = find_frameLength(frame->header);
     if(frame_length == 0) return NULL;
-    frame->data_length = (frame_length - 4);
+    frame->data_length = (frame_length - 36);
 
     //Copy frame data to object
     frame->data = malloc(frame->data_length);
     if(!frame->data) return NULL;
-    memcpy(frame->data, &data[4], frame->data_length);
+    memcpy(frame->data, &data[36], frame->data_length);
 
     return frame;
 }
 
 void dump_frame(FILE *fptr, frame_t *frame) { //Dumps frame into CSV
-    //fprintf(fptr, "%08X, ", frame->header);
+    fprintf(fptr, "%08X, ", frame->header);
+
+    //Prints Side Information to CSV
+    for(int i = 0; i < 32; i++) {
+        fprintf(fptr, "%02X", frame->side_information[i]);
+    } fprintf(fptr, ", ");
+    
     for(int i = 0; i < frame->data_length; i++) {
-        fprintf(fptr, "%d, ", frame->data[i]);
+        fprintf(fptr, "%02X, ", frame->data[i]);
     }
     fprintf(fptr, "\n");
 }

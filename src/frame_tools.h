@@ -9,6 +9,7 @@ extern const int samplerates[];
 typedef struct {
     int data_length;
     uint32_t header;
+    uint8_t *side_information;
     uint8_t *data;
 } frame_t;
 
