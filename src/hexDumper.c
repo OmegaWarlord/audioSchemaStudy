@@ -9,11 +9,10 @@
 #include <unistd.h>
 
 
-int main() {
+int main() { // make it able to cast arguments from terminal for output
 
     int file = open("./MP3Examples/korok.mp3", O_RDONLY);
 
-    int frames = 0;
 
     struct stat file_stat;
 
@@ -23,17 +22,26 @@ int main() {
 
     close(file);
 
+    FILE *fptr;
+    fptr = fopen("./Output/output.csv", "w");
+    if (fptr == NULL) {
+        printf("Error opening file"); 
+        return 1;
+    }
+
+    int frames = 0;
     for(int i = 0; i < file_stat.st_size - 1; i++) {
         if((file_data[i] == 0xFF) && ((file_data[i+1] >> 1) == 0x7D)) {
-            uint8_t *frame_raw = get_raw_frame(&file_data[i], 626); //still seperate so it can be freed
-            frame_t *frame = parse_frame_raw(frame_raw);
-            printf("%08X %02X\n", frame->header, frame->data[0]);
+            frame_t *frame = get_frame(&file_data[i], 627);
+            dump_frame(fptr, frame);
             free(frame);
             frames++;
         }
     }
 
-    printf("Total frames: %d\n", frames);
+    fclose(fptr);
+
+    printf("\nTotal frames: %d\n", frames);
     
     munmap(file_data, file_stat.st_size);
     return 0;
