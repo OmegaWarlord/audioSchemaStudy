@@ -11,6 +11,12 @@ typedef struct {
     uint8_t *data;
 } frame_t;
 
+int find_frameLength(uint32_t header);
+
+int bitrate(int index);
+
+int samplerate(int index);
+
 frame_t *get_frame(uint8_t *data, int frame_length);
 
 void dump_frame(FILE *fptr, frame_t *frame);
