@@ -1,14 +1,10 @@
+#include <string.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include "frame_tools.h"
 
-const int bitrates[] = {
-    0, 32000, 40000, 48000, 56000, 64000, 80000, 96000, 112000, 128000, 160000, 192000, 224000, 256000, 320000, 0
-};
-
-const int samplerates[] = {
-    44100, 48000, 32000, 0
-};
+const int bitrates[] = {0, 32000, 40000, 48000, 56000, 64000, 80000, 96000, 112000, 128000, 160000, 192000, 224000, 256000, 320000, 0};
+const int samplerates[] = {44100, 48000, 32000, 0};
 
 int find_frameLength(uint32_t header) { //Calculating Frame Length
 
@@ -24,24 +20,28 @@ int find_frameLength(uint32_t header) { //Calculating Frame Length
     //Final calculation
     int length = (144*br)/sr+p;
 
-    //Debug outptu
-    //printf("%d, %d, %d, %d, %d, %d\n", br_index, br, sr_index, sr, p, length);
-
     return length;
 }
 
-frame_t *get_frame(uint8_t *data, int frame_length) {
+frame_t *get_frame(const uint8_t *data) {
+    if(!data) return NULL;
     
-    frame_t *frame = malloc(frame_length);
+    //Frame decleration
+    frame_t *frame = malloc(sizeof(frame_t));
+    if(!frame) return NULL;
 
+    //Set Header
     frame->header = (uint32_t)( (data[0]<<24) | (data[1]<<16) | (data[2]<<8) | (data[3]));
-    find_frameLength(frame->header);
-    frame->data_length = frame_length-4;
-    frame->data = malloc(frame_length - 4);
 
-    for(int i = 0; i < frame_length - 4; i++) {
-        frame->data[i] = data[4 + i];
-    }
+    //Find & Set frame Length
+    int frame_length = find_frameLength(frame->header);
+    if(frame_length == 0) return NULL;
+    frame->data_length = (frame_length - 4);
+
+    //Copy frame data to object
+    frame->data = malloc(frame->data_length);
+    if(!frame->data) return NULL;
+    memcpy(frame->data, &data[4], frame->data_length);
 
     return frame;
 }

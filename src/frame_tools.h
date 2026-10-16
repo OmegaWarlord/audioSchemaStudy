@@ -14,7 +14,7 @@ typedef struct {
 
 int find_frameLength(uint32_t header);
 
-frame_t *get_frame(uint8_t *data, int frame_length);
+frame_t *get_frame(const uint8_t *data);
 
 void dump_frame(FILE *fptr, frame_t *frame);
 

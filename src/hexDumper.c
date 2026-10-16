@@ -10,7 +10,6 @@
 
 
 int main(int argc, char *argv[]) { // make it able to cast arguments from terminal for output
-
     printf("%d\n", argc);
 
     int file = open(argv[1], O_RDONLY);
@@ -33,10 +32,12 @@ int main(int argc, char *argv[]) { // make it able to cast arguments from termin
     int frames = 0;
     for(int i = 0; i < file_stat.st_size - 1; i++) {
         if((file_data[i] == 0xFF) && ((file_data[i+1] >> 1) == 0x7D)) {
-            frame_t *frame = get_frame(&file_data[i], 627);
-            dump_frame(fptr, frame);
-            free(frame);
-            frames++;
+            frame_t *frame = get_frame(&file_data[i]);
+            if(frame) {
+                dump_frame(fptr, frame);
+                free(frame);
+                frames++;
+            }
         }
     }
 
