@@ -9,10 +9,11 @@
 #include <unistd.h>
 
 
-int main() { // make it able to cast arguments from terminal for output
+int main(int argc, char *argv[]) { // make it able to cast arguments from terminal for output
 
-    int file = open("./MP3Examples/korok.mp3", O_RDONLY);
+    printf("%d\n", argc);
 
+    int file = open(argv[1], O_RDONLY);
 
     struct stat file_stat;
 
@@ -23,7 +24,7 @@ int main() { // make it able to cast arguments from terminal for output
     close(file);
 
     FILE *fptr;
-    fptr = fopen("./Output/output.csv", "w");
+    fptr = fopen("./output/output.csv", "w");
     if (fptr == NULL) {
         printf("Error opening file"); 
         return 1;
