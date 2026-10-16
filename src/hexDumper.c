@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) { // make it able to cast arguments from termin
 
     int frames = 0;
     for(int i = 0; i < file_stat.st_size - 1; i++) {
-        if((file_data[i] == 0xFF) && ((file_data[i+1] >> 1) == 0x7D)) {
+        if((file_data[i] == 0xFF) && (file_data[i+1] == 0xFB)) {
             frame_t *frame = get_frame(&file_data[i]);
             if(frame) {
                 dump_frame(fptr, frame);

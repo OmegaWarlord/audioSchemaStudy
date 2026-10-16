@@ -15,7 +15,7 @@ int find_frameLength(uint32_t header) { //Calculating Frame Length
     //Bitrate, samplerate, & padding ready to use
     int br = bitrates[br_index];
     int sr = samplerates[sr_index]; 
-    int p = (int)((header >> 9) & 0x01);
+    int p = (int)((header >> 9) & 0x1);
 
     //Final calculation
     int length = (144*br)/sr+p;
