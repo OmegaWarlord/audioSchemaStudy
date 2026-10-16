@@ -3,7 +3,8 @@
 
 #include<stdio.h>
 
-//Maybe create enums later
+extern const int bitrates[];
+extern const int samplerates[];
 
 typedef struct {
     int data_length;
@@ -12,10 +13,6 @@ typedef struct {
 } frame_t;
 
 int find_frameLength(uint32_t header);
-
-int bitrate(int index);
-
-int samplerate(int index);
 
 frame_t *get_frame(uint8_t *data, int frame_length);
 

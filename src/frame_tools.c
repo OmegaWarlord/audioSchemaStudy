@@ -2,22 +2,30 @@
 #include <stdlib.h>
 #include "frame_tools.h"
 
-int find_frameLength(uint32_t header) {
-    //Calculating Frame Length
+const int bitrates[] = {
+    0, 32000, 40000, 48000, 56000, 64000, 80000, 96000, 112000, 128000, 160000, 192000, 224000, 256000, 320000, 0
+};
 
-    int length = 0;
+const int samplerates[] = {
+    44100, 48000, 32000, 0
+};
 
-    //uint8_t br_index = ((frame->header >> 12) & 0x03);
-    //uint8_t sr_index = ((frame->header >> 10) & 0x02);
+int find_frameLength(uint32_t header) { //Calculating Frame Length
+
+    //Finding Indexs for bitrate & samplerate
+    int br_index = (int)((header >> 12) & 0xF);
+    int sr_index = (int)((header >> 10) & 0x3);
+
+    //Bitrate, samplerate, & padding ready to use
+    int br = bitrates[br_index];
+    int sr = samplerates[sr_index]; 
     int p = (int)((header >> 9) & 0x01);
 
-    int br = 0, sr = 0;
+    //Final calculation
+    int length = (144*br)/sr+p;
 
-    printf("hello\n");
-    
-    
-
-    printf("%d, %d, %d, %d\n", br, sr, p, length);
+    //Debug outptu
+    //printf("%d, %d, %d, %d, %d, %d\n", br_index, br, sr_index, sr, p, length);
 
     return length;
 }
