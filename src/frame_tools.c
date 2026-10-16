@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include "frame_tools.h"
 
-const int bitrates[] = {0, 32000, 40000, 48000, 56000, 64000, 80000, 96000, 112000, 128000, 160000, 192000, 224000, 256000, 320000, 0};
-const int samplerates[] = {44100, 48000, 32000, 0};
+const int bitrates[] = {0, 320, 400, 480, 560, 640, 800, 960, 1120, 1280, 1600, 1920, 2240, 2560, 3200, 0};
+const int samplerates[] = {441, 480, 320, 0};
 
 int find_frameLength(uint32_t header) { //Calculating Frame Length
 
@@ -47,9 +47,9 @@ frame_t *get_frame(const uint8_t *data) {
 }
 
 void dump_frame(FILE *fptr, frame_t *frame) { //Dumps frame into CSV
-    fprintf(fptr, "%08X, ", frame->header);
+    //fprintf(fptr, "%08X, ", frame->header);
     for(int i = 0; i < frame->data_length; i++) {
-        fprintf(fptr, "%02X, ", frame->data[i]);
+        fprintf(fptr, "%d, ", frame->data[i]);
     }
     fprintf(fptr, "\n");
 }
