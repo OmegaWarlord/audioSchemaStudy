@@ -8,6 +8,7 @@ ASFLAGS :=
 SRC_DIR := src
 OBJ_DIR := build
 TARGET := bin/hexDumper
+OUTPUT := output
 
 # --- Sources ---
 C_SRCS := $(wildcard $(SRC_DIR)/*.c)
@@ -38,4 +39,4 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.s $(HEADERS)
 # --- Clean Target ---
 .PHONY: all clean
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f $(OBJS) $(TARGET) $(OUTPUT)
