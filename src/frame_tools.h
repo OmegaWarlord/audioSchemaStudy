@@ -1,15 +1,18 @@
 #ifndef FRAME_TOOLS_H
 #define FRAME_TOOLS_H
 
+#include<stdio.h>
+
 //Maybe create enums later
 
 typedef struct {
+    int data_length;
     uint32_t header;
     uint8_t *data;
 } frame_t;
 
-uint8_t *get_raw_frame(uint8_t *data, int frame_len);
+frame_t *get_frame(uint8_t *data, int frame_length);
 
-frame_t *parse_frame_raw(uint8_t *header);
+void dump_frame(FILE *fptr, frame_t *frame);
 
 #endif // FRAME_TOOLS_H
