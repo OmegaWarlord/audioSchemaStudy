@@ -1,7 +1,7 @@
 #ifndef FRAME_TOOLS_H
 #define FRAME_TOOLS_H
 
-#include<stdio.h>
+#include <stdio.h>
 
 extern const int bitrates[];
 extern const int samplerates[];
