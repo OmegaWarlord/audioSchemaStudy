@@ -15,36 +15,39 @@ TARGET := $(TARGET_DIR)/hexDumper
 C_SRCS := $(wildcard $(SRC_DIR)/*.c)
 S_SRCS := $(wildcard $(SRC_DIR)/*.S) $(wildcard $(SRC_DIR)/*.s)
 HEADERS := $(wildcard $(SRC_DIR)/*.h)
-OUTPUTS := $(wildcard $(OUT_DIR)/*)
+OUTPUTS := $(wildcard $(OUT_DIR)/*.*)
 
 # --- Objects ---
 OBJS := $(C_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o) 	\
 		$(S_SRCS:$(SRC_DIR)/%.S=$(OBJ_DIR)/%.o)		\
 		#$(S_SRCS:$(SRC_DIR)/%.s=$(OBJ_DIR)/%.o)	
 
-# --- Functions ---
-all: $(TARGET)
+# --- Default Target ---
+all: clean $(TARGET)
 
-check: #change to order-only prereq at some point
-	@mkdir -p $(OBJ_DIR)
-	@mkdir -p $(OUT_DIR)
+
+# --- Order-Only ---
+target_dir:
 	@mkdir -p $(TARGET_DIR)
 
-clean:
-	rm -f $(OUTPUTS) $(OBJS) $(TARGET)
+obj_dir:
+	@mkdir -p $(OBJ_DIR)
 
 # --- Build Target ---
-$(TARGET): $(OBJS)
+$(TARGET): $(OBJS) | target_dir
 	$(CC) $(CFLAGS) -o $@ $^
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS) | obj_dir
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.S $(HEADERS)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.S $(HEADERS) | obj_dir
 	$(AS) $(ASFLAGS) -c -o $@ $<
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.s $(HEADERS)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.s $(HEADERS) | obj_dir
 	$(AS) $(ASFLAGS) -c -o $@ $<
 
-# --- Default ---
-.PHONY: all check clean
+# --- Clean Target ---
+.PHONY: all clean
+clean:
+	@mkdir -p $(OUT_DIR)
+	rm -f $(OBJS) $(TARGET) $(OUTPUTS)
