@@ -55,7 +55,7 @@ struct SideInformation {
 //Frame Linked List 
 //Needs CRC, MODE, & Emphasis check
 struct Frame{
-    unsigned header_data;                   //Actual information of the Header
+    unsigned header;                        //Actual information of the Header
     unsigned frame_size;                    //Size of the frame calculated from header info
     struct SideInformation side_info;       //Side information          
     unsigned char *main_data;               //Pointer to start of the main_data of frame
