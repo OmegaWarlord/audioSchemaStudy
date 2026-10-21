@@ -58,6 +58,8 @@ struct Frame *create_frame(unsigned char *data, int index) {
     frame->frame_size = find_frameLen(&data[index]);
     if(frame->frame_size <= 0) return NULL;
 
+    //Set frame next;
+    frame->next = NULL;
 
     return frame;
 }
