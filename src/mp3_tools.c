@@ -26,6 +26,11 @@ unsigned find_frameLen(unsigned char *data) { // maybe refactor to use usigned i
     return (144*br)/sr+p;
 }
 
+struct SideInfo *parse_sideInfo(unsigned char *data) {
+    if(!data) return NULL;
+    return NULL;
+}
+
 void side_test(unsigned char *data) {
 
     //Shortcut for get_bits
@@ -44,6 +49,7 @@ void side_test(unsigned char *data) {
     printf("%X, %X, %X, %d, %X, %X, %X, %X\n", mdb, sf0, sf1, p23, bv, gg, sfc, ws);
 }
 
+//Need to add joint 
 struct Frame *create_frame(unsigned char *data, int index) {
     if(!data) return NULL;
 
@@ -57,6 +63,9 @@ struct Frame *create_frame(unsigned char *data, int index) {
     //Find frame length & Validate
     frame->frame_size = find_frameLen(&data[index]);
     if(frame->frame_size <= 0) return NULL;
+
+    //Parse Side information
+    frame->side_info = parse_sideInfo(&data[index+4]);
 
     //Set frame next;
     frame->next = NULL;

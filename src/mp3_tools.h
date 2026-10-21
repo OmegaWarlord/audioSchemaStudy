@@ -40,7 +40,7 @@ struct BlockInfo {
 };
 
 //Side Information struct
-struct SideInformation {
+struct SideInfo {
     unsigned short main_data;       //9 bits, start of main data
     unsigned char private;          //3 bits, not useful
     unsigned char scfsi;            //8 bits (4 ch0 / 4 ch1), Scale factor bands
@@ -57,7 +57,7 @@ struct SideInformation {
 struct Frame{
     unsigned header;                        //Actual information of the Header
     unsigned frame_size;                    //Size of the frame calculated from header info
-    struct SideInformation side_info;       //Side information          
+    struct SideInfo *side_info;             //Side information          
     unsigned char *main_data;               //Pointer to start of the main_data of frame
     struct frame* next;                     //Points to next frame
 };
@@ -65,6 +65,9 @@ struct Frame{
 //Calculates the Frame Length of the frame
 //Returns 0 if the frame is invalid
 unsigned find_frameLen(unsigned char *data);
+
+//Parses info for the side information struct;
+struct SideInfo *parse_sideInfo(unsigned char *data);
 
 //Testing for side information
 void side_test(unsigned char *data);
