@@ -70,7 +70,7 @@ unsigned find_frameLen(unsigned char *data, int index);
 void side_test(unsigned char *data);
 
 //Frame Instantiation
-struct Frame create_frame();
+struct Frame *create_frame(unsigned char *data);
 
 
 

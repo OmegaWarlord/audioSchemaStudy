@@ -28,6 +28,14 @@ unsigned get_bits(unsigned char *data, int sbit, int count) {
     return result;
 }
 
+/*
+unsigned get_bits_next(unsigned char *data, int *count, int amount) {
+    unsigned result = get_bits(&data[0], *count, *count+amount);
+    *count += amount;
+    return result;
+} 
+*/
+
 int sign(int val) {
     return (val > 0) - (val < 0);
 }

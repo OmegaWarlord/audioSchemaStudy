@@ -38,14 +38,14 @@ void side_test(unsigned char *data) {
     unsigned char sf0 = get_bits(d, 12, 4);
     unsigned char sf1 = get_bits(d, 16, 4);
     unsigned short p23 = get_bits(d, 20, 12);
-    unsigned short bv = (data[4]<<1|data[5]>>7)&0x01FF;
-    unsigned char gg = (data[5]<<1|data[6]>>7);
-    unsigned char sfc = (data[6]>>3)&0x04;
-
-
-
-    unsigned char ws = (data[6]>>2)&0x01;
-
+    unsigned short bv = get_bits(d, 32, 9);
+    unsigned char gg = get_bits(d, 41, 8);
+    unsigned char sfc = get_bits(d, 49, 4);
+    unsigned char ws = get_bits(d, 53, 1);
     // 20+ 59 + 59 + 59 + 59
     printf("%X, %X, %X, %d, %X, %X, %X, %X\n", mdb, sf0, sf1, p23, bv, gg, sfc, ws);
+}
+
+struct Frame *create_frame(unsigned char *data) {
+    
 }
