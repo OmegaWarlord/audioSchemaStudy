@@ -7,6 +7,9 @@
 const int brs[] = {0, 320, 400, 480, 560, 640, 800, 960, 1120, 1280, 1600, 1920, 2240, 2560, 3200, 0};
 const int srs[] = {441, 480, 320, 0};
 
+const unsigned char slen1[] = {0,0,0,0,3,1,1,1,2,2,2,3,3,3,4,4};
+const unsigned char slen2[] = {0,1,2,3,0,1,2,3,1,2,3,1,2,3,2,3};
+
 unsigned find_frameLen(unsigned char *data, int index) {
     if(!data) return 0;
 
@@ -38,12 +41,11 @@ void side_test(unsigned char *data) {
     unsigned short bv = (data[4]<<1|data[5]>>7)&0x01FF;
     unsigned char gg = (data[5]<<1|data[6]>>7);
     unsigned char sfc = (data[6]>>3)&0x04;
+
+
+
     unsigned char ws = (data[6]>>2)&0x01;
 
-    // 20[3(0-2)] +  + 59 + 59 + 59
-    /*
-    for( int i = 0; i < 32; i++) {
-        printf("%02X ", data[i]);
-    } printf("\n"); */
-    printf("%X, %X, %X, %X, %X, %X, %X, %X\n", mdb, sf0, sf1, p23, bv, gg, sfc, ws);
+    // 20+ 59 + 59 + 59 + 59
+    printf("%X, %X, %X, %d, %X, %X, %X, %X\n", mdb, sf0, sf1, p23, bv, gg, sfc, ws);
 }

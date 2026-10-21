@@ -5,6 +5,10 @@
 extern const int brs[];
 extern const int srs[];
 
+//slen lookup tables
+extern const unsigned char slen1[];
+extern const unsigned char slen2[];
+
 //Granule-Channel block
 //Repeated for following blocks
 // Granule / Channel

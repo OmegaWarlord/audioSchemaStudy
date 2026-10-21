@@ -27,3 +27,7 @@ unsigned get_bits(unsigned char *data, int sbit, int count) {
 
     return result;
 }
+
+int sign(int val) {
+    return (val > 0) - (val < 0);
+}
