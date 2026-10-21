@@ -10,16 +10,16 @@ const int srs[] = {441, 480, 320, 0};
 const unsigned char slen1[] = {0,0,0,0,3,1,1,1,2,2,2,3,3,3,4,4};
 const unsigned char slen2[] = {0,1,2,3,0,1,2,3,1,2,3,1,2,3,2,3};
 
-unsigned find_frameLen(unsigned char *data, int index) {
+unsigned find_frameLen(unsigned char *data) { // maybe refactor to use usigned int, and move validation to create_frame
     if(!data) return 0;
 
     //Checks to see if Frame Header starts with 0xFFFB
-    if(get_bits(&data[index], 0, 16) != 0xFFFB) return 0;
+    if(get_bits(&data[0], 0, 16) != 0xFFFB) return 0;
 
     //Bitrate, samplerate, & padding ready to use
-    int br = brs[get_bits(&data[index], 16, 4)];
-    int sr = srs[get_bits(&data[index], 20, 2)]; 
-    int p = get_bits(&data[index], 22, 1);
+    int br = brs[get_bits(&data[0], 16, 4)];
+    int sr = srs[get_bits(&data[0], 20, 2)]; 
+    int p = get_bits(&data[0], 22, 1);
 
     //Null Check
     if((br == 0) || (sr == 0)) return 0;
@@ -46,6 +46,12 @@ void side_test(unsigned char *data) {
     printf("%X, %X, %X, %d, %X, %X, %X, %X\n", mdb, sf0, sf1, p23, bv, gg, sfc, ws);
 }
 
-struct Frame *create_frame(unsigned char *data) {
+struct Frame *create_frame(unsigned char *data, int index) {
+
+    //Find frame length & Validate
+    unsigned frame_len = find_frameLen(&data[index]);
+    if(frame_len <= 0) return NULL;
+
     
+    return NULL;
 }

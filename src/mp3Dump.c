@@ -23,8 +23,9 @@ int main(int argc, char *argv[]) {
     FILE *fptr = fopen("./output/output.csv", "w");
     if(fptr == NULL) return 1;
 
+    /*
     for(int i = 0; i < file_stat.st_size; i++) {
-        unsigned frame_length = find_frameLen(file_data, i);
+        unsigned frame_length = find_frameLen(&file_data[i]);
         if(frame_length != 0) {
 
             unsigned file_header = get_bits(&file_data[i], 0, 32);
@@ -32,7 +33,15 @@ int main(int argc, char *argv[]) {
 
             fprintf(fptr, "%d, %d, %08X, %d\n", i, frame_length, file_header, data_start);
 
-            side_test(&file_data[i+4]);
+            //side_test(&file_data[i+4]);
+        }
+    }
+    */
+
+    for(int i = 0; i < file_stat.st_size; i++) {
+        struct Frame *frame = create_frame(file_data, i);
+        if(frame != NULL) {
+            printf("Valid\n");
         }
     }
 

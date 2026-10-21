@@ -64,13 +64,13 @@ struct Frame{
 
 //Calculates the Frame Length of the frame
 //Returns 0 if the frame is invalid
-unsigned find_frameLen(unsigned char *data, int index);
+unsigned find_frameLen(unsigned char *data);
 
 //Testing for side information
 void side_test(unsigned char *data);
 
 //Frame Instantiation
-struct Frame *create_frame(unsigned char *data);
+struct Frame *create_frame(unsigned char *data, int index);
 
 
 
