@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "mp3_tools.h"
+#include "utils.h"
 
 const int brs[] = {0, 320, 400, 480, 560, 640, 800, 960, 1120, 1280, 1600, 1920, 2240, 2560, 3200, 0};
 const int srs[] = {441, 480, 320, 0};
@@ -10,12 +11,12 @@ unsigned find_frameLen(unsigned char *data, int index) {
     if(!data) return 0;
 
     //Checks to see if Frame Header starts with 0xFFFB
-    if(!((data[index] == 0xFF) && (data[index + 1] == 0xFB))) return 0;
+    if(get_bits(&data[index], 0, 16) != 0xFFFB) return 0;
 
     //Bitrate, samplerate, & padding ready to use
-    int br = brs[(data[index + 2] >> 4) & 0xF];
-    int sr = srs[(data[index + 2] >> 2) & 0x3]; 
-    int p = (int)((data[index + 2] >> 1) & 0x1);
+    int br = brs[get_bits(&data[index], 16, 4)];
+    int sr = srs[get_bits(&data[index], 20, 2)]; 
+    int p = get_bits(&data[index], 22, 1);
 
     //Null Check
     if((br == 0) || (sr == 0)) return 0;
@@ -25,11 +26,24 @@ unsigned find_frameLen(unsigned char *data, int index) {
 }
 
 void side_test(unsigned char *data) {
+
+    //Shortcut for get_bits
+    unsigned char *d = &data[0];
     
     //Extracting info
-    unsigned short main_data_begins = (data[0] <<1 | data[0] >>7);
+    unsigned short mdb = get_bits(d, 0, 9);
+    unsigned char sf0 = get_bits(d, 12, 4);
+    unsigned char sf1 = get_bits(d, 16, 4);
+    unsigned short p23 = get_bits(d, 20, 12);
+    unsigned short bv = (data[4]<<1|data[5]>>7)&0x01FF;
+    unsigned char gg = (data[5]<<1|data[6]>>7);
+    unsigned char sfc = (data[6]>>3)&0x04;
+    unsigned char ws = (data[6]>>2)&0x01;
 
-    //printing it
-    printf("Main Data Begins: %d\n", main_data_begins);
-    printf("");
+    // 20[3(0-2)] +  + 59 + 59 + 59
+    /*
+    for( int i = 0; i < 32; i++) {
+        printf("%02X ", data[i]);
+    } printf("\n"); */
+    printf("%X, %X, %X, %X, %X, %X, %X, %X\n", mdb, sf0, sf1, p23, bv, gg, sfc, ws);
 }

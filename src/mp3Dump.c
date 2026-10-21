@@ -5,8 +5,10 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include "utils.h"
 #include "frame_tools.h"
 #include "mp3_tools.h"
+
 
 int main(int argc, char *argv[]) {
     if(argc == 0) return 1;
@@ -25,8 +27,8 @@ int main(int argc, char *argv[]) {
         unsigned frame_length = find_frameLen(file_data, i);
         if(frame_length != 0) {
 
-            unsigned file_header = (file_data[i] <<24 | file_data[i+1] <<16 | file_data[i+2] <<8 | file_data[i+3]);
-            unsigned short data_start = (file_data[i+4] <<1 | file_data[i+5] >>7);
+            unsigned file_header = get_bits(&file_data[i], 0, 32);
+            unsigned short data_start = get_bits(&file_data[i+4], 0, 9);
 
             fprintf(fptr, "%d, %d, %08X, %d\n", i, frame_length, file_header, data_start);
 

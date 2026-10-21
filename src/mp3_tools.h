@@ -15,7 +15,7 @@ struct BlockInfo {
     unsigned short big_values;          //9 bits, # of fc pairs using large value huffman tables
     unsigned char global_gain;          //8 bits, global quantization size
     unsigned char scalefac_compress;    //4 bits, Controls how scale factors are packed
-    unsigned char window_sw_flg;        //1 bit, Determines if short (1) or long (2) windows are used
+    unsigned char window_sw_flg;        //1 bit, Determines if short (1) or long (0) windows are used
 
     //Long window
     unsigned short table_sel_long;      //15 bits, (3 * 5) 3 5-bit values determining huffman codebooks for regions 0, 1, 2
