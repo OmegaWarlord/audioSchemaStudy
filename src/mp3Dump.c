@@ -21,17 +21,14 @@ int main(int argc, char *argv[]) {
     unsigned char *file_data = mmap(NULL, file_stat.st_size, PROT_READ, MAP_PRIVATE, file, 0);
 
     FILE *fptr = fopen("./output/output.csv", "w");
-    fprintf(fptr, "Location, Size, Header\n");
+    fprintf(fptr, "Location, Size, Header, Begins\n");
 
     if(fptr == NULL) return 1;
 
     for(int i = 0; i < file_stat.st_size; i++) {
         struct Frame *frame = create_frame(file_data, i);
         if(frame != NULL) {;
-            //unsigned short data_start = get_bits(&file_data[i+4], 0, 9);
-
             fprintf(fptr, "%d, %d, %08X\n", i, frame->frame_size, frame->header);
-            printf("Valid\n");
         } else {
             free(frame);
         }

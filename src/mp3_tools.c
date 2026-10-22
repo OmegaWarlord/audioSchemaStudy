@@ -26,28 +26,31 @@ unsigned find_frameLen(unsigned char *data) { // maybe refactor to use usigned i
     return (144*br)/sr+p;
 }
 
+/*
 struct SideInfo *parse_sideInfo(unsigned char *data) {
     if(!data) return NULL;
-    return NULL;
-}
 
-void side_test(unsigned char *data) {
+    //Instantiate Side Info
+    struct SideInfo *info = malloc(sizeof(struct SideInfo));
 
     //Shortcut for get_bits
     unsigned char *d = &data[0];
     
     //Extracting info
-    unsigned short mdb = get_bits(d, 0, 9);
-    unsigned char sf0 = get_bits(d, 12, 4);
-    unsigned char sf1 = get_bits(d, 16, 4);
-    unsigned short p23 = get_bits(d, 20, 12);
-    unsigned short bv = get_bits(d, 32, 9);
-    unsigned char gg = get_bits(d, 41, 8);
-    unsigned char sfc = get_bits(d, 49, 4);
-    unsigned char ws = get_bits(d, 53, 1);
-    // 20+ 59 + 59 + 59 + 59
-    printf("%X, %X, %X, %d, %X, %X, %X, %X\n", mdb, sf0, sf1, p23, bv, gg, sfc, ws);
+    info->main_data = get_bits(d, 0, 9);
+    info->scfsi = get_bits(d, 12, 8);
+    //unsigned char sf0 = get_bits(d, 12, 4);
+    //unsigned char sf1 = get_bits(d, 16, 4);
+    //unsigned short p23 = get_bits(d, 20, 12);
+    //unsigned short bv = get_bits(d, 32, 9);
+    //unsigned char gg = get_bits(d, 41, 8);
+    //unsigned char sfc = get_bits(d, 49, 4);
+    //unsigned char ws = get_bits(d, 53, 1);
+
+    return info;
 }
+
+*/
 
 //Need to add joint 
 struct Frame *create_frame(unsigned char *data, int index) {
@@ -64,8 +67,16 @@ struct Frame *create_frame(unsigned char *data, int index) {
     frame->frame_size = find_frameLen(&data[index]);
     if(frame->frame_size <= 0) return NULL;
 
+    //Gets the size of main data;
+    
+
+    //Get Main;
+    unsigned short main_begins = index-get_bits(&data[index+4], 0, 9);
+
+
     //Parse Side information
-    frame->side_info = parse_sideInfo(&data[index+4]);
+    //
+    //unsigned char scfsi = get_bits(&data[index+4], 12, 8);
 
     //Set frame next;
     frame->next = NULL;

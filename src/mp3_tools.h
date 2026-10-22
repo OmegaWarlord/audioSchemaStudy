@@ -42,7 +42,6 @@ struct BlockInfo {
 //Side Information struct
 struct SideInfo {
     unsigned short main_data;       //9 bits, start of main data
-    unsigned char private;          //3 bits, not useful
     unsigned char scfsi;            //8 bits (4 ch0 / 4 ch1), Scale factor bands
 
     //2 granules x 2 channels = 4 granule-channel blocks
@@ -59,6 +58,7 @@ struct Frame{
     unsigned frame_size;                    //Size of the frame calculated from header info
     struct SideInfo *side_info;             //Side information          
     unsigned char *main_data;               //Pointer to start of the main_data of frame
+    unsigned int main_size;                 //Size of main data;
     struct frame* next;                     //Points to next frame
 };
 
@@ -66,11 +66,7 @@ struct Frame{
 //Returns 0 if the frame is invalid
 unsigned find_frameLen(unsigned char *data);
 
-//Parses info for the side information struct;
-struct SideInfo *parse_sideInfo(unsigned char *data);
-
-//Testing for side information
-void side_test(unsigned char *data);
+//Parses Main_data;
 
 //Frame Instantiation
 struct Frame *create_frame(unsigned char *data, int index);
