@@ -58,7 +58,7 @@ struct Frame{
     unsigned frame_size;                    //Size of the frame calculated from header info
     struct SideInfo *side_info;             //Side information          
     unsigned char *main_data;               //Pointer to start of the main_data of frame
-    unsigned int main_size;                 //Size of main data;
+    int main_size;                 //Size of main data;
     struct frame* next;                     //Points to next frame
 };
 
@@ -67,6 +67,7 @@ struct Frame{
 unsigned find_frameLen(unsigned char *data);
 
 //Parses Main_data;
+void get_main(struct Frame *frame, unsigned char *data, int index, int main_begins);
 
 //Frame Instantiation
 struct Frame *create_frame(unsigned char *data, int index);

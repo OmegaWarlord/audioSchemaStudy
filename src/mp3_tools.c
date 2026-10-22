@@ -52,6 +52,34 @@ struct SideInfo *parse_sideInfo(unsigned char *data) {
 
 */
 
+//Get the main data of Each Frame
+void get_main(struct Frame *frame, unsigned char *data, int index, int main_begins) {
+    if(!data) return;
+
+    //calculate main data size
+    frame->main_size = frame->frame_size - 36;
+
+    //Set main data;
+    frame->main_data = malloc(frame->main_size * sizeof(char));
+
+    //Calculate Frame Start
+    int frame_start = index - main_begins;
+    int frame_end = frame_start + frame->frame_size;
+
+    //Iterate through data
+    int j = 0;
+    for(int i = frame_start; i < frame_end; i++) {
+        if(i == index) i += 36;
+
+       frame->main_data[j] = data[i];
+        
+        
+        j++;
+    }
+
+    printf("%d %d %d\n", frame_start, frame_end, index);
+}
+
 //Need to add joint 
 struct Frame *create_frame(unsigned char *data, int index) {
     if(!data) return NULL;
@@ -67,15 +95,11 @@ struct Frame *create_frame(unsigned char *data, int index) {
     frame->frame_size = find_frameLen(&data[index]);
     if(frame->frame_size <= 0) return NULL;
 
-    //Gets the size of main data;
-    
-
     //Get Main;
     unsigned short main_begins = index-get_bits(&data[index+4], 0, 9);
-
-
-    //Parse Side information
-    //
+    get_main(frame, data, index, main_begins);
+    if(!frame->main_data) return NULL;
+    
     //unsigned char scfsi = get_bits(&data[index+4], 12, 8);
 
     //Set frame next;

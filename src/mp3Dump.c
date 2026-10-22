@@ -28,7 +28,11 @@ int main(int argc, char *argv[]) {
     for(int i = 0; i < file_stat.st_size; i++) {
         struct Frame *frame = create_frame(file_data, i);
         if(frame != NULL) {;
-            fprintf(fptr, "%d, %d, %08X\n", i, frame->frame_size, frame->header);
+            fprintf(fptr, "%d, %d, %08X, ", i, frame->frame_size, frame->header);
+            for(int i = 0; i < frame->main_size; i++) {
+                fprintf(fptr, "%02X, ", frame->main_data[i]);
+            } 
+            fprintf(fptr, "\n");
         } else {
             free(frame);
         }
